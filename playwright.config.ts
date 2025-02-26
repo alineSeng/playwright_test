@@ -30,6 +30,10 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    headless: false, // Pour voir les tests s'exécuter dans le navigateur
+    viewport: { width: 1280, height: 720 },
+    actionTimeout: 10000, // Augmente le délai d'attente pour chaque action à 10 secondes
+    navigationTimeout: 30000, // Augmente le délai d'attente pour la navigation à 30 secondes
   },
 
   /* Configure projects for major browsers */

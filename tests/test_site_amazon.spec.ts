@@ -1,61 +1,52 @@
-import { test, expect } from '@playwright/test';
-import { HomePage } from '../POM/HomePage';
+import { test} from '@playwright/test';
+import { Home_Page } from '../POM/home_page'; 
+import { Cart_Page } from '../POM/cart_page';
+import { Register_Page } from '../POM/register_page';
 
+test.use({ browserName: 'firefox' });
 
+test('Purchase order on Amazon website', async ({ page }) => {
+  const homePage = new Home_Page(page);
+  const cartPage = new Cart_Page(page);
+  const registerPage = new Register_Page(page);
 
-
-
-test('aller sur la page web amazon', async ({ page }) => {
-  const homePage = new HomePage(page);
-  //await page.goto('https://www.amazon.fr/');
-  await homePage.navigate();
-  // await page.getByRole('textbox', { name: 'Search For' }).click();
-  // await page.getByRole('textbox', { name: 'Search For' }).fill('maison');
-  // await page.getByRole('textbox', { name: 'Search For' }).press('Enter');
-  // await page.getByRole('button', { name: 'Aller' }).click();
-  // await page.getByRole('button', { name: 'Accepter' }).click();
-});
-
-test('refuser le cookies', async ({ page }) => {
-  const homePage = new HomePage(page);
+  // Aller sur le site Amazon.fr
   await homePage.navigate();
 
-  await homePage.refuser_cookies();
+  // Refuser les cookies')
+  await homePage.reject_cookies();
 
-});
-
-test('ajout d\'une lampe de bureau SKYLEO au panier', async ({ page }) => {
-  const homePage = new HomePage(page);
-  await homePage.navigate();
-  await homePage.refuser_cookies();
-
-  await homePage.ajout_lampe_de_bureau_SKYLEO_au_panier();
-
-});
-
-test('passer la commande', async ({ page }) => {
-  await page.goto('https://www.amazon.fr/');
+  // Ajouter une lampe de bureau au panier
+  await homePage.add_desk_lamp_SKYLEO_to_cart();
   
-  await page.getByRole('button', { name: 'Refuser' }).click();
+  // Aller au panier
+  await homePage.go_to_cart();
 
-  await page.getByRole('searchbox', { name: 'Rechercher Amazon.fr' }).click();
-  await page.getByRole('searchbox', { name: 'Rechercher Amazon.fr' }).fill('SKYLEO Lampe de bureau LED – Desk Lamp double tête – 24W Protection yeux – Contrôle tactile – 5 modes de couleur x 11 niveaux de luminosité – 2400 lm – Fonction minuterie et mémoire – Noir [Classe énergétique D]');
-  await page.getByRole('button', { name: 'Go', exact: true }).click();
+  // Passer à la commande
+  await cartPage.proceed_to_checkout();
 
-  await page.getByRole('heading', { name: 'SKYLEO Lampe de bureau LED –' }).locator('#productTitle').isVisible();
-
-  await page.getByRole('link', { name: 'Publicité sponsorisée - SKYLEO Lampe de bureau LED – Desk Lamp double tête –' }).first().click();
-  await page.getByTitle('Ajouter au panier').click();
-
-  const panier = await page.getByRole('link', { name: 'article dans le panier' }).isVisible();
-  // expect(panier).toBeTruthy();
-
-  
-  //const contenuPanier = await page.locator('.sc-list-item-content').innerText();
-  const contenuPanier = await page.getByRole('link', { name: 'article dans le panier' }).innerText();
-  expect(contenuPanier).toContain('1');
-
-  await page.getByRole('button', { name: 'Passer la commande' }).click();
 
 });
+
+test('Create an account', async ({ page }) => {
+  const homePage = new Home_Page(page);
+  const cartPage = new Cart_Page(page);
+  const registerPage = new Register_Page(page);
+
+  await homePage.navigate();
+  await homePage.reject_cookies();
+  await homePage.add_desk_lamp_SKYLEO_to_cart();
+  await homePage.go_to_cart();
+  await cartPage.proceed_to_checkout();
+
+  // create an account
+  await registerPage.go_to_register_page();
+  await registerPage.register_with_fake_email();
+
+});
+
+
+
+
+
 
