@@ -6,6 +6,7 @@ export class Register_Page {
     constructor(page: Page) {
         this.page = page;
     }
+
     async go_to_register_page() {
         const register_button = await this.page.getByRole('link', { name: 'Créer votre compte Amazon' });
 
@@ -36,7 +37,6 @@ export class Register_Page {
         await expect(error_message).toContainText('Un problème est survenu');
         await expect(error_message_detail).toContainText('Veuillez saisir un numéro de');
 
-    
     }
 
     

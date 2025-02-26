@@ -3,12 +3,13 @@ import { test, expect } from '@playwright/test';
 
 export class Home_Page {
     readonly page: Page;
+    readonly url: string = 'https://www.amazon.fr/';
     constructor(page: Page) {
         this.page = page;
     }
 
     async navigate() {
-        await this.page.goto('https://www.amazon.fr/'); 
+        await this.page.goto(this.url); 
     }
 
     async reject_cookies() {
